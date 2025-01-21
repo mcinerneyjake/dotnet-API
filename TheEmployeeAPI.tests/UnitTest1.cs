@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using TheEmployeeAPI.Abstractions;
 
 namespace TheEmployeeAPI.Tests;
 
@@ -10,7 +12,10 @@ public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
 
   public BasicTests(WebApplicationFactory<Program> factory)
   {
-      _factory = factory;
+    _factory = factory;
+
+    var repo = _factory.Services.GetRequiredService<IRepository<Employee>>();
+    repo.Create(new Employee { FirstName = "John", LastName = "Doe" });
   }
 
   [Fact]
@@ -37,7 +42,8 @@ public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
     var client = _factory.CreateClient();
     var response = await client.PostAsJsonAsync("/employees", new Employee {
       FirstName = "John",
-      LastName = "Doe"
+      LastName = "Doe",
+      SocialSecurityNumber = "123-46-7890",
     });
 
     response.EnsureSuccessStatusCode();
@@ -50,5 +56,14 @@ public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
     var response = await client.PostAsJsonAsync("/employees", new{});
 
     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+  }
+
+  [Fact]
+  public async Task UpdateEmployee_ReturnsNotFoundForNonExistentEmployee()
+  {
+      var client = _factory.CreateClient();
+      var response = await client.PutAsJsonAsync("/employees/9999", new Employee { FirstName = "Bambi", LastName = "Doe", SocialSecurityNumber = "123-45-7892" });
+
+    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
   }
 }

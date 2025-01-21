@@ -31,3 +31,4 @@
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/obj/Debug/net8.0/TheEmployeeAPI.pdb
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/obj/Debug/net8.0/TheEmployeeAPI.genruntimeconfig.cache
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/obj/Debug/net8.0/ref/TheEmployeeAPI.dll
+/Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/obj/Debug/net8.0/TheEmployeeAPI.sourcelink.json
