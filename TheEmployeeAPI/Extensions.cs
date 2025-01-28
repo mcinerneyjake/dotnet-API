@@ -1,30 +1,21 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using FluentValidation.Results;
 
 namespace TheEmployeeAPI;
 
 public static class Extensions
 {
-  public static ValidationProblemDetails ToValidationProblemDetails(this List<ValidationResult> validationResults)
-  {
-    var problemDetails = new ValidationProblemDetails();
 
-    foreach (var validationResult in validationResults)
+    public static ModelStateDictionary ToModelStateDictionary(this ValidationResult validationResult)
     {
-      foreach (var memberName in validationResult.MemberNames)
-      {
-        if (problemDetails.Errors.ContainsKey(memberName))
+        var modelState = new ModelStateDictionary();
+
+        foreach (var error in validationResult.Errors)
         {
-          problemDetails.Errors[memberName] = problemDetails.Errors[memberName].Concat([validationResult.ErrorMessage]).ToArray()!;
+            modelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
-        else
-        {
-          problemDetails.Errors[memberName] = new List<string> { validationResult.ErrorMessage! }.ToArray();
-        }
-      }
+
+        return modelState;
     }
 
-    return problemDetails;
-  }
 }
