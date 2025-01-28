@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using TheEmployeeAPI;
 using TheEmployeeAPI.Abstractions;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRepository<Employee>, EmployeeRepository>();
+builder.Services.AddProblemDetails();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
@@ -24,7 +28,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 employeeRoute.MapGet(string.Empty, (IRepository<Employee> repository) => {
-  return Results.Ok(repository.GetAll().Select(employee => new GetEmployeeResponse {
+  return Results.Ok(repository.GetAll().Select(employee => new GetEmployeeRequest {
     FirstName = employee.FirstName,
     LastName = employee.LastName,
     Address1 = employee.Address1,
@@ -44,7 +48,7 @@ employeeRoute.MapGet("{id:int}", (int id, IRepository<Employee> repository) => {
     return Results.NotFound();
   }
 
-  return Results.Ok(new GetEmployeeResponse {
+  return Results.Ok(new GetEmployeeRequest {
     FirstName = employee.FirstName,
     LastName = employee.LastName,
     Address1 = employee.Address1,
@@ -57,10 +61,23 @@ employeeRoute.MapGet("{id:int}", (int id, IRepository<Employee> repository) => {
   });
 });
 
-employeeRoute.MapPost(string.Empty, ([FromBody] CreateEmployeeRequest employeeRequest, IRepository<Employee> repository) => {
-  var newEmployee = new Employee {
-    FirstName = employeeRequest.FirstName,
-    LastName = employeeRequest.LastName,
+employeeRoute.MapPost(string.Empty,
+async (
+  CreateEmployeeRequest employeeRequest,
+  IRepository<Employee> repository,
+  IValidator<CreateEmployeeRequest> validator
+) =>
+{
+  var validationResults = await validator.ValidateAsync(employeeRequest);
+    if (!validationResults.IsValid)
+    {
+      return Results.ValidationProblem(validationResults.ToDictionary());
+    }
+
+  var newEmployee = new Employee
+  {
+    FirstName = employeeRequest.FirstName!,
+    LastName = employeeRequest.LastName!,
     SocialSecurityNumber = employeeRequest.SocialSecurityNumber,
     Address1 = employeeRequest.Address1,
     Address2 = employeeRequest.Address2,
