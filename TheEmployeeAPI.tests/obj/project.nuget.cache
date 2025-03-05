@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "rcdtqrl8vFg=",
+  "dgSpecHash": "TpvWE1sJ1GI=",
   "success": true,
   "projectFilePath": "/Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI.tests/TheEmployeeAPI.tests.csproj",
   "expectedPackageFiles": [
     "/Users/Jake/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/Users/Jake/.nuget/packages/fluentvalidation/12.0.0-preview1/fluentvalidation.12.0.0-preview1.nupkg.sha512",
+    "/Users/Jake/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "/Users/Jake/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.0.0-preview1/fluentvalidation.dependencyinjectionextensions.12.0.0-preview1.nupkg.sha512",
     "/Users/Jake/.nuget/packages/microsoft.aspnetcore.mvc.testing/8.0.10/microsoft.aspnetcore.mvc.testing.8.0.10.nupkg.sha512",
     "/Users/Jake/.nuget/packages/microsoft.aspnetcore.openapi/8.0.12/microsoft.aspnetcore.openapi.8.0.12.nupkg.sha512",
