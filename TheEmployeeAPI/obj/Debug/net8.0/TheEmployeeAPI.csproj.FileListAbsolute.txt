@@ -35,3 +35,5 @@
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/bin/Debug/net8.0/FluentValidation.dll
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/bin/Debug/net8.0/TheEmployeeAPI.xml
+/Users/Jake/Desktop/coding/front-end-masters/dotnet-c#/building-apis-with-c#-and-aspdotnet-core/TheEmployeeAPI/obj/Debug/net8.0/TheEmployeeAPI.xml

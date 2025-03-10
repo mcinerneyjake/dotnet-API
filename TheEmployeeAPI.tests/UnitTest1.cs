@@ -10,16 +10,25 @@ namespace TheEmployeeAPI.Tests;
 public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
 {
   private readonly WebApplicationFactory<Program> _factory;
-  private int _employeeIdForAddressTest;
+  private int _employeeId;
 
   public BasicTests(WebApplicationFactory<Program> factory)
   {
     _factory = factory;
 
     var repo = _factory.Services.GetRequiredService<IRepository<Employee>>();
-    var employee = new Employee { FirstName = "John", LastName = "Doe", Address1 = "1234 Lane Street" };
+    var employee = new Employee {
+      FirstName = "John",
+      LastName = "Doe",
+      Address1 = "1234 Lane Street",
+      Benefits = new List<EmployeeBenefits>
+      {
+        new EmployeeBenefits { BenefitType = BenefitType.Health, Cost = 100 },
+        new EmployeeBenefits { BenefitType = BenefitType.Dental, Cost = 50 }
+      }
+    };
     repo.Create(employee);
-    _employeeIdForAddressTest = repo.GetAll().First().Id;
+    _employeeId = repo.GetAll().First().Id;
   }
 
   [Fact]
@@ -95,7 +104,7 @@ public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
     var invalidEmployee = new UpdateEmployeeRequest(); // Empty object to trigger validation errors
 
     // Act
-    var response = await client.PutAsJsonAsync($"/employees/{_employeeIdForAddressTest}", invalidEmployee);
+    var response = await client.PutAsJsonAsync($"/employees/{_employeeId}", invalidEmployee);
 
     // Assert
     Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -103,5 +112,19 @@ public class BasicTests : IClassFixture<WebApplicationFactory<Program>>
     var problemDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
     Assert.NotNull(problemDetails);
     Assert.Contains("Address1", problemDetails.Errors.Keys);
+  }
+
+  [Fact]
+  public async Task GetBenefitsForEmployee_ReturnsOkResult()
+  {
+    // Act
+    var client = _factory.CreateClient();
+    var response = await client.GetAsync($"/employees/{_employeeId}/benefits");
+
+    // Assert
+    response.EnsureSuccessStatusCode();
+    
+    var benefits = await response.Content.ReadFromJsonAsync<IEnumerable<GetEmployeeRequestEmployeeBenefit>>();
+    Assert.Equal(2, benefits?.Count());
   }
 }

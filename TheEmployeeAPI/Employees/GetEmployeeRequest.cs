@@ -1,3 +1,5 @@
+using TheEmployeeAPI;
+
 public class GetEmployeeRequest
 {
   public required string FirstName { get; set; }
@@ -10,4 +12,13 @@ public class GetEmployeeRequest
   public string? ZipCode { get; set; }
   public string? PhoneNumber { get; set; }
   public string? Email { get; set; }
+  public required List<GetEmployeeRequestEmployeeBenefit> Benefits { get; set; }
+}
+
+public class GetEmployeeRequestEmployeeBenefit
+{
+    public int Id { get; set; }
+    public int EmployeeId { get; set; }
+    public BenefitType BenefitType { get; set; }
+    public decimal Cost { get; set; }
 }
