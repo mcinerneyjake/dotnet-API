@@ -1,1 +1,10 @@
-{}
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "TheEmployeeAPI",
+      "database": "/Users/Jake/Desktop/coding/front-end-masters/dotnet-c\\#/building-apis-with-c\\#-and-aspdotnet-core/TheEmployeeAPI/employees.db"
+    }
+  ]
+}

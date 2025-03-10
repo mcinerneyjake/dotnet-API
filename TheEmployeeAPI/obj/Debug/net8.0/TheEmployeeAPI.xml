@@ -39,5 +39,17 @@
             <param name="employeeId">The ID to get the benefits for.</param>
             <returns>The benefits for that employee.</returns>
         </member>
+        <member name="T:TheEmployeeAPI.Migrations.Init">
+            <inheritdoc />
+        </member>
+        <member name="M:TheEmployeeAPI.Migrations.Init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TheEmployeeAPI.Migrations.Init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TheEmployeeAPI.Migrations.Init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
