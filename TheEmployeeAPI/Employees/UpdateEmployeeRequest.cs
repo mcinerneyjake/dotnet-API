@@ -1,6 +1,5 @@
 using FluentValidation;
 using TheEmployeeAPI;
-using TheEmployeeAPI.Abstractions;
 
 public class UpdateEmployeeRequest
 {
@@ -16,24 +15,23 @@ public class UpdateEmployeeRequest
 public class UpdateEmployeeRequestValidator : AbstractValidator<UpdateEmployeeRequest>
 {
   private readonly HttpContext _httpContext;
-  private readonly IRepository<Employee> _repository;
+  private readonly AppDbContext _appDbContext;
 
-  public UpdateEmployeeRequestValidator(IHttpContextAccessor httpContextAccessor, IRepository<Employee> repository)
+  public UpdateEmployeeRequestValidator(
+    IHttpContextAccessor httpContextAccessor,
+    AppDbContext appDbContext
+  )
   {
     this._httpContext = httpContextAccessor.HttpContext!;
-    this._repository = repository;
+    this._appDbContext = appDbContext;
 
-    RuleFor(x => x.Address1)
-      .MustAsync(NotBeEmptyIfItIsSetOnEmployeeAlreadyAsync)
-      .WithMessage("Address1 must not be empty.");
+    RuleFor(x => x.Address1).MustAsync(NotBeEmptyIfItIsSetOnEmployeeAlreadyAsync).WithMessage("Address1 must not be empty.");
   }
 
   private async Task<bool> NotBeEmptyIfItIsSetOnEmployeeAlreadyAsync(string? address, CancellationToken token)
   {
-    await Task.CompletedTask;   //again, we'll not make this async for now!
-
     var id = Convert.ToInt32(_httpContext.Request.RouteValues["id"]);
-    var employee = _repository.GetById(id);
+    var employee = await _appDbContext.Employees.FindAsync(id);
 
     if (employee!.Address1 != null && string.IsNullOrWhiteSpace(address))
     {

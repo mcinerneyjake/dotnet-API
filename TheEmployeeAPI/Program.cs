@@ -1,7 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 using TheEmployeeAPI;
-using TheEmployeeAPI.Abstractions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +13,6 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "TheEmployeeAPI.xml"));
 });
 
-builder.Services.AddSingleton<IRepository<Employee>, EmployeeRepository>();
 builder.Services.AddProblemDetails();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddControllers(options =>
@@ -25,14 +21,15 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<AppDbContext>(options => {
-  options.UseSqlite("Data Source=employees.db");
+  options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+  options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Seed(services);
+    SeedData.MigrateAndSeed(services);
 }
 
 var employeeRoute = app.MapGroup("employees");
